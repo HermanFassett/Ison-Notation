@@ -6,27 +6,19 @@ DataSet::DataSet() {
 
 }
 
-void DataSet::addSymbol(const Symbol &symbol, unsigned int index) {
+void DataSet::addSymbol(std::shared_ptr<ISymbol> symbol, unsigned int index) {
     if (index == -1) {
         m_symbols.push_back(symbol);
     } else {
-        m_symbols.insert(symbol, index);
+        //m_symbols.insert(symbol, index);
     }
 }
 
-Symbol& DataSet::getSymbol(unsigned int index) {
+std::shared_ptr<ISymbol> DataSet::getSymbol(unsigned int index) {
     return m_symbols[index];
 }
 
-const Symbol& DataSet::getSymbol(unsigned int index) const {
-    return m_symbols[index];
-}
-
-Symbol& DataSet::operator [] (unsigned int index) {
-    return getSymbol(index);
-}
-
-const Symbol& DataSet::operator [] (unsigned int index) const {
+std::shared_ptr<ISymbol> DataSet::operator [] (unsigned int index) {
     return getSymbol(index);
 }
 
@@ -49,6 +41,6 @@ DataSet::Iterator& DataSet::Iterator::operator ++ (int) {
     return *this;
 }
 
-const Symbol& DataSet::Iterator::symbol() {
+std::shared_ptr<ISymbol> DataSet::Iterator::symbol() {
     return m_dataSet->m_symbols[m_index];
 }

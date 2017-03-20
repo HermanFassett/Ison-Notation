@@ -1,10 +1,11 @@
 #ifndef APOSTROPHOS_SYMBOL_HPP
 #define APOSTROPHOS_SYMBOL_HPP
+#include "../ISymbol.hpp"
 
 namespace IsonNotation {
-    class Apostrophos {
-    private:
-        const int step = -1;
+    class Apostrophos : public ISymbol {
+    public:
+        Apostrophos() : ISymbol("Apostrophos", 1, false, "!", "1") {}
     };
 }
 

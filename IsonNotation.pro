@@ -25,12 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    DataModel/Symbols/Ison.cpp \
-    DataModel/Symbols/Kentemata.cpp \
-    DataModel/Symbols/Oligon.cpp \
-    DataModel/Symbols/Petaste.cpp \
-    DataModel/Symbols/Ypsele.cpp \
-    DataModel/DataSet.cpp
+    DataModel/DataSet.cpp \
+    DataModel/Parser.cpp
 
 HEADERS  += mainwindow.h \
     DataModel/ISymbol.hpp \
@@ -45,6 +41,10 @@ HEADERS  += mainwindow.h \
     DataModel/Symbols/Apostrophos.hpp \
     DataModel/Symbols/Elaphron.hpp \
     DataModel/Symbols/Kamele.hpp \
-    DataModel/Symbols/Ypporoe.hpp
+    DataModel/Symbols/Ypporoe.hpp \
+    DataModel/Parser.hpp
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    fonts.qrc

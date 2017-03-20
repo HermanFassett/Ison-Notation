@@ -2,6 +2,7 @@
 #define DATA_SET_HPP
 #include "ISymbol.hpp"
 #include <vector>
+#include <memory>
 
 namespace IsonNotation {
     class DataSet {
@@ -10,7 +11,7 @@ namespace IsonNotation {
         public:
             Iterator& operator++ (int);
             bool hasNext() const;
-            const Symbol& symbol();
+            std::shared_ptr<ISymbol> symbol();
             unsigned int tone() const;
             unsigned int modifiers() const;
 
@@ -23,17 +24,15 @@ namespace IsonNotation {
         };
 
         Iterator iterator() const;
-        Symbol& getSymbol(unsigned int index);
-        const Symbol& getSymbol(unsigned int index) const;
-        Symbol& operator [] (unsigned int index);
-        const Symbol& operator [] (unsigned int index) const;
+        std::shared_ptr<ISymbol> getSymbol(unsigned int index);
+        std::shared_ptr<ISymbol> operator [] (unsigned int index);
 
         DataSet();
 
-        void addSymbol(const Symbol& symbol, unsigned int index = -1);
+        void addSymbol(std::shared_ptr<ISymbol> symbol, unsigned int index = -1);
 
     private:
-        std::vector<Symbol> m_symbols;
+        std::vector<std::shared_ptr<ISymbol>> m_symbols;
     };
 }
 

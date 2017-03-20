@@ -1,10 +1,11 @@
 #ifndef YPSELE_SYMBOL_HPP
 #define YPSELE_SYMBOL_HPP
+#include "../ISymbol.hpp"
 
 namespace IsonNotation {
-    class Ypsele {
-    private:
-        const int step = NULL;
+    class Ypsele : public ISymbol {
+    public:
+        Ypsele() : ISymbol("Ypsele", 4, true, "4", "4") {}
     };
 }
 

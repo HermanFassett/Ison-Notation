@@ -1,10 +1,11 @@
 #ifndef ELAPHRON_SYMBOL_HPP
 #define ELAPHRON_SYMBOL_HPP
+#include "../ISymbol.hpp"
 
 namespace IsonNotation {
-    class Elaphron {
-    private:
-        const int step = -2;
+    class Elaphron : public ISymbol {
+    public:
+        Elaphron() : ISymbol("Elaphron", 2, false, "@", "2") {}
     };
 }
 

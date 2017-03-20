@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/ByzMusicFonts">
+        <file alias="Fthora">Fonts/EZ Fthora.TTF</file>
+        <file alias="Omega">Fonts/EZ Omega.ttf</file>
+        <file alias="Oxeia">Fonts/EZ Oxeia.ttf</file>
+        <file alias="Psaltica">Fonts/EZ Psaltica.TTF</file>
+        <file alias="Special1">Fonts/EZ Special-I.TTF</file>
+        <file alias="Special2">Fonts/EZ Special-II.TTF</file>
+    </qresource>
+</RCC>

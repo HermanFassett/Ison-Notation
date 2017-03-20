@@ -1,10 +1,11 @@
 #ifndef KAMELE_SYMBOL_HPP
 #define KAMELE_SYMBOL_HPP
+#include "../ISymbol.hpp"
 
 namespace IsonNotation {
-    class Kamele {
-    private:
-        const int step = -4;
+    class Kamele : public ISymbol {
+    public:
+        Kamele() : ISymbol("Kamele", 4, false, "$", "4") {}
     };
 }
 
