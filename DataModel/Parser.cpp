@@ -3,6 +3,7 @@
 #include "Symbols/Oligon.hpp"
 #include "Symbols/Apostrophos.hpp"
 #include "Symbols/Elaphron.hpp"
+#include "Modifiers/Martyria.hpp"
 
 using namespace IsonNotation;
 
@@ -32,6 +33,8 @@ std::shared_ptr<DataSet> Parser::parse(const std::string& input) const {
         case '2':
             if (!up) ret->addSymbol(std::make_shared<Elaphron>());
             break;
+        case 'm':
+            ret->addSymbol(std::make_shared<Martyria>(Martyria(NI, DIATONIC)));
         default:
             mod = input[i];
             break;

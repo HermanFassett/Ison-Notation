@@ -42,7 +42,10 @@ HEADERS  += mainwindow.h \
     DataModel/Symbols/Elaphron.hpp \
     DataModel/Symbols/Kamele.hpp \
     DataModel/Symbols/Ypporoe.hpp \
-    DataModel/Parser.hpp
+    DataModel/Parser.hpp \
+    DataModel/Modifiers/Martyria.hpp \
+    DataModel/Modifiers/Fthora.hpp \
+    DataModel/Symbols/SymbolGroup.hpp
 
 FORMS    += mainwindow.ui
 

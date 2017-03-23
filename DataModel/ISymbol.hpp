@@ -12,7 +12,10 @@ namespace IsonNotation {
         const std::string getCode() { return code; }
         const bool isUp() { return up; }
         const std::string getName() { return name; }
-
+    protected:
+        void setFontCode(const std::string fc) {
+            fontCode = fc;
+        }
     private:
         bool up;
         int step;

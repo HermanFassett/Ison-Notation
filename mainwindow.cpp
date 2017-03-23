@@ -140,8 +140,8 @@ void MainWindow::display() {
     auto iter = m_dataSet->iterator();
     for (iter; iter.hasNext(); iter++) {
         // Add item to browser
-        ui->textBrowser->setText(ui->textBrowser->toPlainText() +
-                                 QString::fromStdString(iter.symbol()->getFontCode()));
+        QString code = QString::fromStdString(iter.symbol()->getFontCode());
+        ui->textBrowser->setText(ui->textBrowser->toPlainText() + code);
     }
 }
 
