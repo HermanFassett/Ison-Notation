@@ -45,7 +45,12 @@ HEADERS  += mainwindow.h \
     DataModel/Parser.hpp \
     DataModel/Modifiers/Martyria.hpp \
     DataModel/Modifiers/Fthora.hpp \
-    DataModel/Symbols/SymbolGroup.hpp
+    DataModel/Symbols/SymbolGroup.hpp \
+    DataModel/Symbols/Bar.hpp \
+    DataModel/Modifiers/Digorgon.hpp \
+    DataModel/Modifiers/Gorgon.hpp \
+    DataModel/Modifiers/Klasma.hpp \
+    DataModel/Modifiers/Trigorgon.hpp
 
 FORMS    += mainwindow.ui
 
