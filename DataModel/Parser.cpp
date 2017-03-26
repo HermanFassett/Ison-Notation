@@ -3,10 +3,12 @@
 #include "Symbols/Oligon.hpp"
 #include "Symbols/Kentemata.hpp"
 #include "Symbols/Petaste.hpp"
+#include "Symbols/Kamele.hpp"
 #include "Symbols/Ypporoe.hpp"
 #include "Symbols/Apostrophos.hpp"
 #include "Symbols/Elaphron.hpp"
 #include "Symbols/Bar.hpp"
+#include "Symbols/SymbolGroup.hpp"
 #include "Modifiers/Martyria.hpp"
 #include "Modifiers/Klasma.hpp"
 #include "Modifiers/Fthora.hpp"
@@ -25,14 +27,34 @@ std::shared_ptr<DataSet> Parser::parse(const std::string& input) const {
     // THESE ARE ALL SAME POINTER
     // Probably should be refactored later
     const std::map<std::string, std::shared_ptr<ISymbol>> map = {
-        { std::make_pair("0", std::make_shared<Ison>()) },
-        { std::make_pair("-0", std::make_shared<Ison>()) },
-        { std::make_pair("1", std::make_shared<Oligon>()) },
-        { std::make_pair("-1", std::make_shared<Apostrophos>()) },
-        { std::make_pair("#1", std::make_shared<Petaste>()) },
-        { std::make_pair("&1", std::make_shared<Kentemata>()) },
-        { std::make_pair("-&1", std::make_shared<Ypporoe>()) },
-        { std::make_pair("-2", std::make_shared<Elaphron>()) }
+        { "0", std::make_shared<Ison>(Ison()) },
+        { "-0", std::make_shared<Ison>(Ison()) },
+        { "1", std::make_shared<Oligon>(Oligon()) },
+        { "-1", std::make_shared<Apostrophos>(Apostrophos()) },
+        { "#1", std::make_shared<Petaste>(Petaste()) },
+        { "-#1", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::ApostrophosPetaste)) },
+        { "&1", std::make_shared<Kentemata>(Kentemata()) },
+        { "-&1", std::make_shared<Ypporoe>(Ypporoe()) },
+        { "2", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::OligonKentema)) },
+        { "-2", std::make_shared<Elaphron>(Elaphron()) },
+        { "#2", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::OligonPetaste)) },
+        { "-#2", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::ElaphronPetaste)) },
+        { "3", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KentemaOligon)) },
+        { "-3", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::ElaphronApostrophos)) },
+        { "#3", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KentemaPetaste)) },
+        { "4", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::OligonYpsele)) },
+        { "-4", std::make_shared<Kamele>(Kamele()) },
+        { "#4", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::PetasteYpsele)) },
+        { "-#4", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::ElpahronApsotrophosPetaste)) },
+        { "5", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::YpseleOligon)) },
+        { "-5", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KameleApostrophos)) },
+        { "#5", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::YpselePetaste)) },
+        { "6", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KentemaOligonYpsele)) },
+        { "-6", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KameleElaphron)) },
+        { "#6", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KentemaPetasteYpsele)) },
+        { "7", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::YpseleKentemaOligon)) },
+        { "-7", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KameleElaphronApostrophos)) },
+        { "#7", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::YpseleKentemaPetaste)) }
     };
 
     // Set up variables

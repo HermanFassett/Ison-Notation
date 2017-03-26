@@ -16,6 +16,16 @@ namespace IsonNotation {
         void setFontCode(const std::string fc) {
             fontCode = fc;
         }
+        void setCode(const std::string c) {
+            code = c;
+        }
+        void setStep(const int s) {
+            step = s;
+        }
+        void setUp(bool u) {
+            up = u;
+        }
+
     private:
         bool up;
         int step;
