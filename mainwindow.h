@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFontDatabase>
+#include <QCloseEvent>
 #include "DataModel/ISymbol.hpp"
 #include "DataModel/DataSet.hpp"
 #include "DataModel/Parser.hpp"
@@ -21,6 +22,8 @@ public:
     std::shared_ptr<IsonNotation::DataSet> parse(const QString& input) const;
 
 private:
+    // For overriding close event
+    void closeEvent(QCloseEvent*);
     const QString openFile(const QString& file) const;
     void saveFile(const QString& file);
     void resetTitle();
@@ -42,6 +45,8 @@ private slots:
     void changed();
     void undoEdit();
     void redoEdit();
+    void exportODF();
+    void exportPDF();
 };
 
 #endif // MAINWINDOW_H

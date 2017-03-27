@@ -5,6 +5,9 @@
 #include <QTextStream>
 #include <QFontDatabase>
 #include <QFont>
+#include <QPrinter>
+#include <QTextDocument>
+#include <QTextDocumentWriter>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,6 +38,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave, SIGNAL(triggered(bool)), this, SLOT(save()));
     connect(ui->actionSave_As, SIGNAL(triggered(bool)), this, SLOT(saveAs()));
     connect(ui->actionExit, SIGNAL(triggered(bool)), this, SLOT(close()));
+    // Export
+    connect(ui->actionODF, SIGNAL(triggered(bool)), this, SLOT(exportODF()));
+    connect(ui->actionPDF, SIGNAL(triggered(bool)), this, SLOT(exportPDF()));
     // Edit
     connect(ui->actionUndo, SIGNAL(triggered(bool)), this, SLOT(undoEdit()));
     connect(ui->actionRedo, SIGNAL(triggered(bool)), this, SLOT(redoEdit()));
@@ -45,6 +51,19 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+// Override close event
+void MainWindow::closeEvent(QCloseEvent *event) {
+    // Ask user if they want to close with unsaved changes
+    if (!saved) {
+        QMessageBox::StandardButton res = QMessageBox::question(this, "Ison Notation",
+                                          tr("You have unsaved changes. Are you sure you want to exit?"),
+                                          QMessageBox::Cancel | QMessageBox::Yes,
+                                          QMessageBox::Cancel);
+        if (res == QMessageBox::Cancel) event->ignore();
+        else event->accept();
+    } else event->accept();
 }
 
 void MainWindow::resetTitle() {
@@ -143,6 +162,32 @@ void MainWindow::display() {
         QString code = QString::fromStdString(iter.symbol()->getFontCode());
         ui->textBrowser->setText(ui->textBrowser->toPlainText() + code);
     }
+}
+
+void MainWindow::exportODF() {
+    // Get file name
+    const QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Open Document Format (*.odt)"));
+    if (fileName.isEmpty()) return;
+    // Get output as text document and write it
+    QTextDocumentWriter writer(fileName);
+    QTextDocument *doc = ui->textBrowser->document();
+    writer.write(doc);
+    ui->statusBar->showMessage("Exported to ODF", 5000);
+}
+
+void MainWindow::exportPDF() {
+    // Get file name
+    const QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("Adobe Portable Document Format (*.pdf)"));
+    if (fileName.isEmpty()) return;
+    // Set up printer for writing pdf file
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setPageSize(QPrinter::A4);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(fileName);
+    // Get document from textBrowser
+    QTextDocument *doc = ui->textBrowser->document();
+    doc->print(&printer);
+    ui->statusBar->showMessage("Exported to PDF", 5000);
 }
 
 std::shared_ptr<IsonNotation::DataSet> MainWindow::parse(const QString& input) const {
