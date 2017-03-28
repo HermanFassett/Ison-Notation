@@ -56,3 +56,5 @@ FORMS    += mainwindow.ui
 
 RESOURCES += \
     fonts.qrc
+
+include(lib/QMidi/QMidi.pri)

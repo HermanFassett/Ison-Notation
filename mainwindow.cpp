@@ -8,6 +8,8 @@
 #include <QPrinter>
 #include <QTextDocument>
 #include <QTextDocumentWriter>
+#include <QMidiFile.h>
+#include <QMidiOut.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
