@@ -2,8 +2,8 @@
 
 using namespace IsonNotation;
 
-DataSet::DataSet() {
-
+DataSet::DataSet(std::shared_ptr<Martyria> m) {
+    m_startNote = m;
 }
 
 void DataSet::addSymbol(std::shared_ptr<ISymbol> symbol, unsigned int index) {
@@ -16,6 +16,14 @@ void DataSet::addSymbol(std::shared_ptr<ISymbol> symbol, unsigned int index) {
 
 std::shared_ptr<ISymbol> DataSet::getSymbol(unsigned int index) {
     return m_symbols[index];
+}
+
+void DataSet::setStart(std::shared_ptr<Martyria> m) {
+    m_startNote = m;
+}
+
+std::shared_ptr<Martyria> DataSet::getStart() {
+    return m_startNote;
 }
 
 std::shared_ptr<ISymbol> DataSet::operator [] (unsigned int index) {

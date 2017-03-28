@@ -45,11 +45,14 @@ namespace IsonNotation {
         SymbolGroup(SymbolGroups s, const std::string name = "Group") :
             ISymbol(name) {
             this->group = s;
-            this->setFontCode(this->getGroupFontCode());
+            Group g = getGroup();
+            setFontCode(g.fontCode);
+            setUp(g.up);
+            setStep(g.step);
         }
-        const std::vector<std::shared_ptr<ISymbol>> getGroup();
+        const std::vector<std::shared_ptr<ISymbol>> getSymbols();
 
-        const std::string getGroupFontCode() {
+        const Group getGroup() {
             const Group groups[19] = {
                 //UP
                 Group(2, true, "2"),
@@ -73,7 +76,7 @@ namespace IsonNotation {
                 Group(6, false, "^"),
                 Group(7, false, "&")
             };
-            return groups[group].fontCode;
+            return groups[group];
         }
 
     private:

@@ -1,6 +1,7 @@
 #ifndef DATA_SET_HPP
 #define DATA_SET_HPP
 #include "ISymbol.hpp"
+#include "Modifiers/Martyria.hpp"
 #include <vector>
 #include <memory>
 
@@ -27,12 +28,15 @@ namespace IsonNotation {
         std::shared_ptr<ISymbol> getSymbol(unsigned int index);
         std::shared_ptr<ISymbol> operator [] (unsigned int index);
 
-        DataSet();
+        DataSet(std::shared_ptr<Martyria> m = std::make_shared<Martyria>(Martyria(NI, DIATONIC)));
 
         void addSymbol(std::shared_ptr<ISymbol> symbol, unsigned int index = -1);
+        void setStart(std::shared_ptr<Martyria> m);
+        std::shared_ptr<Martyria> getStart();
 
     private:
         std::vector<std::shared_ptr<ISymbol>> m_symbols;
+        std::shared_ptr<Martyria> m_startNote;
     };
 }
 

@@ -58,10 +58,10 @@ std::shared_ptr<DataSet> Parser::parse(const std::string& input) const {
     };
 
     // Set up variables
-    bool up = true, modgroup = false;
+    bool up = true, modgroup = false, martyria = false;
     std::string key = "";
     char mod = ' ';
-    std::shared_ptr<DataSet> ret = std::make_shared<DataSet>();
+    std::shared_ptr<DataSet> ret = std::make_shared<DataSet>(DataSet());
     // Traverse input for parsing
     for (unsigned int i = 0; i < input.length(); i++) {
         switch(input[i]) {
@@ -114,11 +114,34 @@ std::shared_ptr<DataSet> Parser::parse(const std::string& input) const {
             break;
         // Martyria
         case 'm':
-            if (input[i+1] && input[i+1] == '1') ret->addSymbol(std::make_shared<Martyria>(Martyria(PA, CHROMATIC, PA)));
-            else ret->addSymbol(std::make_shared<Martyria>(Martyria(NI, DIATONIC)));
+            martyria = true;
             break;
         default:
             break;
+        }
+        // Case for last char a martyria code
+        if (martyria) {
+            // If first part of code, assign as first note in dataset
+            if (i == 0) {
+                ret->setStart(std::make_shared<Martyria>(Martyria(NI, ENHARMONIC)));
+            }
+            // Get the first note in dataset and extrapolate the current note
+            int note = ret->getStart()->getNote();
+            Scale scale = ret->getStart()->getScale();
+            auto iter = ret->iterator();
+            for (; iter.hasNext(); iter++) {
+                int step = iter.symbol()->getStep();
+                // Check if it's a standard symbol (i.e. not a modifier)
+                if (step > -1) {
+                    note += (iter.symbol()->isUp()) ? step : -step;
+                }
+            }
+            int mod = note >= 0 ? note % 7 : (7 - abs(note % 7)) % 7;
+            Parallagi current = static_cast<Parallagi>(mod);
+            // Add martyria based on current note in dataset
+            ret->addSymbol(std::make_shared<Martyria>(Martyria(current, scale)));
+            // Reset martyria flag
+            martyria = false;
         }
     }
     return ret;

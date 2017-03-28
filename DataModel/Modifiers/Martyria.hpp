@@ -14,6 +14,9 @@ namespace IsonNotation {
         const Parallagi getBase() { return base; }
         const Parallagi getNote() { return first; }
         const Scale getScale() { return scale; }
+        void setBase(const Parallagi b) { base = b; }
+        void setNote(const Parallagi n) { first = n; }
+        void setScale(Scale s) { scale = s; }
 
         const std::string getMartyriaFontCode() {
             switch(scale) {
@@ -28,15 +31,15 @@ namespace IsonNotation {
                 return enharmonicFontCodes[first];
                 break;
             default:
-                return "m";
+                return "";
                 break;
             }
         }
 
     private:
-        const Parallagi first;
-        const Parallagi base;
-        const Scale scale;
+        Parallagi first;
+        Parallagi base;
+        Scale scale;
 
         // Define font codes that will render Martyria in EZ Psaltica font
         const std::string diatonicFontCodes[8] = {
