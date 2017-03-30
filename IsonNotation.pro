@@ -55,6 +55,7 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui
 
 RESOURCES += \
-    fonts.qrc
+    fonts.qrc \
+    midi.qrc
 
 include(lib/QMidi/QMidi.pri)

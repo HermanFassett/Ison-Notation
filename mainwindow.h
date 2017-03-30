@@ -5,6 +5,7 @@
 #include <QFontDatabase>
 #include <QCloseEvent>
 #include "DataModel/ISymbol.hpp"
+#include "DataModel/IScale.hpp"
 #include "DataModel/DataSet.hpp"
 #include "DataModel/Parser.hpp"
 
@@ -45,6 +46,7 @@ private slots:
     void changed();
     void undoEdit();
     void redoEdit();
+    void exportMidi();
     void exportODF();
     void exportPDF();
 };

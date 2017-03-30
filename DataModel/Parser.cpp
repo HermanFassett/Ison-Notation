@@ -107,10 +107,10 @@ std::shared_ptr<DataSet> Parser::parse(const std::string& input) const {
             break;
         // Other symbols
         case '|':
-            ret->addSymbol(std::make_shared<Bar>());
+            ret->addSymbol(std::make_shared<Bar>(Bar()));
             break;
         case '`':
-            ret->addSymbol(std::make_shared<Klasma>());
+            ret->addSymbol(std::make_shared<Klasma>(Klasma()));
             break;
         // Martyria
         case 'm':

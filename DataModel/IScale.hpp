@@ -21,6 +21,10 @@ namespace IsonNotation {
         ENHARMONIC
     };
 
+    static float scaleSteps[8] = {
+        0.0f, 2.0f, 4.0f, 5.0f, 7.0f, 9.0f, 11.0f, 12.0f
+    };
+
     class IScale {
 
     };

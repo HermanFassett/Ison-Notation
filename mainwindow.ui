@@ -53,6 +53,7 @@
      <property name="title">
       <string>Export</string>
      </property>
+     <addaction name="actionMIDI"/>
      <addaction name="actionODF"/>
      <addaction name="actionPDF"/>
     </widget>
@@ -149,6 +150,11 @@
   <action name="actionPDF">
    <property name="text">
     <string>PDF</string>
+   </property>
+  </action>
+  <action name="actionMIDI">
+   <property name="text">
+    <string>MIDI</string>
    </property>
   </action>
  </widget>
