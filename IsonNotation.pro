@@ -26,7 +26,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     DataModel/DataSet.cpp \
-    DataModel/Parser.cpp
+    DataModel/Parser.cpp \
+    DataModel/SymbolFactory.cpp
 
 HEADERS  += mainwindow.h \
     DataModel/ISymbol.hpp \
@@ -50,7 +51,8 @@ HEADERS  += mainwindow.h \
     DataModel/Modifiers/Digorgon.hpp \
     DataModel/Modifiers/Gorgon.hpp \
     DataModel/Modifiers/Klasma.hpp \
-    DataModel/Modifiers/Trigorgon.hpp
+    DataModel/Modifiers/Trigorgon.hpp \
+    DataModel/SymbolFactory.hpp
 
 FORMS    += mainwindow.ui
 

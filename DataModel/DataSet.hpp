@@ -34,9 +34,12 @@ namespace IsonNotation {
         void setStart(std::shared_ptr<Martyria> m);
         std::shared_ptr<Martyria> getStart();
 
+        const unsigned int size() { return length; }
+
     private:
         std::vector<std::shared_ptr<ISymbol>> m_symbols;
         std::shared_ptr<Martyria> m_startNote;
+        unsigned int length = 0;
     };
 }
 

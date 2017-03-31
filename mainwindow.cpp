@@ -177,18 +177,21 @@ void MainWindow::exportMidi() {
     // Loop through dataset
     auto iter = m_dataSet->iterator();
     int note = m_dataSet->getStart()->getNote();
-    for (int i = 0; iter.hasNext(); iter++, i++) {
+    for (float i = 0; iter.hasNext(); iter++) {
         int step = iter.symbol()->getStep();
         // Check if it's a standard symbol (i.e. not a modifier)
         if (step > -1) {
+            float duration = iter.symbol()->getDuration();
             note += (iter.symbol()->isUp()) ? step : -step;
             int mod = note >= 0 ? note % 7 : (7 - abs(note % 7)) % 7;
             IsonNotation::Parallagi current = static_cast<IsonNotation::Parallagi>(mod);
             int octave = (note > -1 ? note : note - 7) / 7 * 12;
             // 60 = Middle C
             int final = 60 + octave + IsonNotation::scaleSteps[current];
+            // 490 = Quarter Note
             f.createNoteOnEvent(0, i * 490, 0, final, 60);
-            f.createNoteOffEvent(0, (i + 1) * 490, 0, final, 60);
+            i += duration;
+            f.createNoteOffEvent(0, i * 490, 0, final, 60);
         }
     }
     // Save to filename

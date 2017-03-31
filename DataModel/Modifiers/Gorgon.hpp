@@ -5,7 +5,7 @@
 namespace IsonNotation {
     class Gorgon : public IModifier {
     public:
-        Gorgon() : IModifier("Gorgon") {}
+        Gorgon() : IModifier("Gorgon", "s", ".") {}
     };
 }
 
