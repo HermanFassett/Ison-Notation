@@ -1,9 +1,9 @@
-#ifndef PARSER_HPP
-#define PARSER_HPP
-#include "SymbolFactory.hpp"
-#include "DataSet.hpp"
-#include <string>
+#ifndef SYMBOL_FACTORY_HPP
+#define SYMBOL_FACTORY_HPP
 #include <memory>
+#include <cctype>
+#include <algorithm>
+#include "ISymbol.hpp"
 #include "Symbols/Ison.hpp"
 #include "Symbols/Oligon.hpp"
 #include "Symbols/Kentemata.hpp"
@@ -20,17 +20,15 @@
 #include "Modifiers/Gorgon.hpp"
 #include "Modifiers/Digorgon.hpp"
 #include "Modifiers/Trigorgon.hpp"
-#include <set>
-#include <map>
 
 namespace IsonNotation {
-    class Parser {
+
+    class SymbolFactory {
     public:
-        Parser();
-        std::shared_ptr<IsonNotation::DataSet> parse(const std::string& input) const;
-    private:
-        SymbolFactory m_factory;
+        SymbolFactory() {}
+        std::shared_ptr<ISymbol> create(std::string name) const;
     };
+
 }
 
-#endif // PARSER_HPP
+#endif // SYMBOL_FACTORY_HPP

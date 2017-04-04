@@ -1,20 +1,4 @@
 #include "DataModel/Parser.hpp"
-#include "Symbols/Ison.hpp"
-#include "Symbols/Oligon.hpp"
-#include "Symbols/Kentemata.hpp"
-#include "Symbols/Petaste.hpp"
-#include "Symbols/Kamele.hpp"
-#include "Symbols/Ypporoe.hpp"
-#include "Symbols/Apostrophos.hpp"
-#include "Symbols/Elaphron.hpp"
-#include "Symbols/Bar.hpp"
-#include "Symbols/SymbolGroup.hpp"
-#include "Modifiers/Martyria.hpp"
-#include "Modifiers/Klasma.hpp"
-#include "Modifiers/Fthora.hpp"
-#include "Modifiers/Gorgon.hpp"
-#include <set>
-#include <map>
 
 using namespace IsonNotation;
 
@@ -23,45 +7,13 @@ Parser::Parser() {
 }
 
 std::shared_ptr<DataSet> Parser::parse(const std::string& input) const {
-    // Create map for parsing
-    // THESE ARE ALL SAME POINTER
-    // Probably should be refactored later
-    const std::map<std::string, std::shared_ptr<ISymbol>> map = {
-        { "0", std::make_shared<Ison>(Ison()) },
-        { "-0", std::make_shared<Ison>(Ison()) },
-        { "1", std::make_shared<Oligon>(Oligon()) },
-        { "-1", std::make_shared<Apostrophos>(Apostrophos()) },
-        { "#1", std::make_shared<Petaste>(Petaste()) },
-        { "-#1", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::ApostrophosPetaste)) },
-        { "&1", std::make_shared<Kentemata>(Kentemata()) },
-        { "-&1", std::make_shared<Ypporoe>(Ypporoe()) },
-        { "2", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::OligonKentema)) },
-        { "-2", std::make_shared<Elaphron>(Elaphron()) },
-        { "#2", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::OligonPetaste)) },
-        { "-#2", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::ElaphronPetaste)) },
-        { "3", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KentemaOligon)) },
-        { "-3", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::ElaphronApostrophos)) },
-        { "#3", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KentemaPetaste)) },
-        { "4", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::OligonYpsele)) },
-        { "-4", std::make_shared<Kamele>(Kamele()) },
-        { "#4", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::PetasteYpsele)) },
-        { "-#4", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::ElpahronApsotrophosPetaste)) },
-        { "5", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::YpseleOligon)) },
-        { "-5", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KameleApostrophos)) },
-        { "#5", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::YpselePetaste)) },
-        { "6", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KentemaOligonYpsele)) },
-        { "-6", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KameleElaphron)) },
-        { "#6", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KentemaPetasteYpsele)) },
-        { "7", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::YpseleKentemaOligon)) },
-        { "-7", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::KameleElaphronApostrophos)) },
-        { "#7", std::make_shared<SymbolGroup>(SymbolGroup(SymbolGroups::YpseleKentemaPetaste)) }
-    };
-
     // Set up variables
     bool up = true, modgroup = false, martyria = false;
+    int dot = 0;
     std::string key = "";
     char mod = ' ';
     std::shared_ptr<DataSet> ret = std::make_shared<DataSet>(DataSet());
+    std::shared_ptr<ISymbol> symbol;
     // Traverse input for parsing
     for (unsigned int i = 0; i < input.length(); i++) {
         switch(input[i]) {
@@ -100,17 +52,21 @@ std::shared_ptr<DataSet> Parser::parse(const std::string& input) const {
                 if (!modgroup) mod = ' ';
             }
             key += input[i];
-            if (map.find(key) != map.end()) {
-                ret->addSymbol(map.at(key));
-            }
+            symbol = m_factory.create(key);
+            if (symbol != nullptr) ret->addSymbol(symbol);
             key = "";
             break;
         // Other symbols
         case '|':
-            ret->addSymbol(std::make_shared<Bar>());
+            ret->addSymbol(m_factory.create("bar"));
+            break;
+        // Duration symbols
+        case '.':
+            dot++;
             break;
         case '`':
-            ret->addSymbol(std::make_shared<Klasma>());
+            ret->getSymbol(ret->size() - 1)->setDuration(2.0f);
+            ret->addSymbol(m_factory.create("klasma"));
             break;
         // Martyria
         case 'm':
@@ -142,6 +98,25 @@ std::shared_ptr<DataSet> Parser::parse(const std::string& input) const {
             ret->addSymbol(std::make_shared<Martyria>(Martyria(current, scale)));
             // Reset martyria flag
             martyria = false;
+        }
+        if (dot > 0) {
+            for (; i < input.length() - 1 && input[i + 1] == '.'; i++, dot++);
+            unsigned int size = ret->size();
+            if (dot == 1) {
+                ret->getSymbol(size - 2)->setDuration(ret->getSymbol(size - 2)->getDuration() - 0.5f);
+                ret->getSymbol(size - 1)->setDuration(ret->getSymbol(size - 1)->getDuration() - 0.5f);
+                ret->addSymbol(m_factory.create("gorgon"));
+            }
+            // These require lookahead duration changes...
+            else if (dot == 2) {
+                // Change durations here
+                ret->addSymbol(m_factory.create("digorgon"));
+            }
+            else if (dot == 3) {
+                // Change durations here
+                ret->addSymbol(m_factory.create("trigorgon"));
+            }
+            dot = 0;
         }
     }
     return ret;

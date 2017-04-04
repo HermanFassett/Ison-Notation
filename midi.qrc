@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/midi">
+        <file alias="Base">base.mid</file>
+    </qresource>
+</RCC>

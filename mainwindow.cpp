@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave_As, SIGNAL(triggered(bool)), this, SLOT(saveAs()));
     connect(ui->actionExit, SIGNAL(triggered(bool)), this, SLOT(close()));
     // Export
+    connect(ui->actionMIDI, SIGNAL(triggered(bool)), this, SLOT(exportMidi()));
     connect(ui->actionODF, SIGNAL(triggered(bool)), this, SLOT(exportODF()));
     connect(ui->actionPDF, SIGNAL(triggered(bool)), this, SLOT(exportPDF()));
     // Edit
@@ -164,6 +165,38 @@ void MainWindow::display() {
         QString code = QString::fromStdString(iter.symbol()->getFontCode());
         ui->textBrowser->setText(ui->textBrowser->toPlainText() + code);
     }
+}
+
+void MainWindow::exportMidi() {
+    // Get file name
+    const QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "", tr("MIDI (*.mid)"));
+    if (fileName.isEmpty()) return;
+    // Load base file since I can't manage to create base from scratch
+    QMidiFile f;
+    f.load(":/midi/Base");
+    // Loop through dataset
+    auto iter = m_dataSet->iterator();
+    int note = m_dataSet->getStart()->getNote();
+    for (float i = 0; iter.hasNext(); iter++) {
+        int step = iter.symbol()->getStep();
+        // Check if it's a standard symbol (i.e. not a modifier)
+        if (step > -1) {
+            float duration = iter.symbol()->getDuration();
+            note += (iter.symbol()->isUp()) ? step : -step;
+            int mod = note >= 0 ? note % 7 : (7 - abs(note % 7)) % 7;
+            IsonNotation::Parallagi current = static_cast<IsonNotation::Parallagi>(mod);
+            int octave = (note > -1 ? note : note - 7) / 7 * 12;
+            // 60 = Middle C
+            int final = 60 + octave + IsonNotation::scaleSteps[current];
+            // 490 = Quarter Note
+            f.createNoteOnEvent(0, i * 490, 0, final, 60);
+            i += duration;
+            f.createNoteOffEvent(0, i * 490, 0, final, 60);
+        }
+    }
+    // Save to filename
+    f.save(fileName);
+    ui->statusBar->showMessage("Exported to MIDI", 5000);
 }
 
 void MainWindow::exportODF() {

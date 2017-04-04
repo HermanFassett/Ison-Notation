@@ -5,7 +5,7 @@
 namespace IsonNotation {
     class Digorgon : public IModifier {
     public:
-        Digorgon() : IModifier("Digorgon") {}
+        Digorgon() : IModifier("Digorgon", "d", "..") {}
     };
 }
 

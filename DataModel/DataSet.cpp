@@ -7,6 +7,7 @@ DataSet::DataSet(std::shared_ptr<Martyria> m) {
 }
 
 void DataSet::addSymbol(std::shared_ptr<ISymbol> symbol, unsigned int index) {
+    length++;
     if (index == -1) {
         m_symbols.push_back(symbol);
     } else {
